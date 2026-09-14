@@ -40,9 +40,16 @@ export type AttributeConfig = AttributeType & {
 };
 export type Translations = { [phrase: string]: string };
 
+/** A `name` option: a plain string, or name parts resolved from the registry. */
+export type EntityName = string | EntityNameItem | EntityNameItem[];
+
+export type EntityNameItem =
+  | { type: "entity" | "device" | "parent_device" | "area" | "floor" }
+  | { type: "text"; text: string };
+
 export interface TimerBarEntityConfig extends styleConfig {
   type: string;
-  name?: string;
+  name?: EntityName;
   entity?: string;
 
   state?: { fixed: string };
@@ -69,6 +76,12 @@ export interface TimerBarEntityConfig extends styleConfig {
 }
 
 export interface TimerBarConfig extends TimerBarEntityConfig {
+  /**
+   * The card's heading, rendered as free text. Narrowed back to a string: a
+   * structured name has no single entity to resolve against here, and this is
+   * rendered straight into the card header.
+   */
+  name?: string;
   entities?: (string | TimerBarEntityConfig)[];
 
   header_entity?: string;
